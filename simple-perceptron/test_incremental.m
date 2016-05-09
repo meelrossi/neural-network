@@ -1,4 +1,5 @@
 function answer = test_incremental (ft)
+    % inputs = [1 1; 1 0; 0 1; 0 0];
     inputs = [1 1 1; 1 0 1; 0 1 1; 0 0 1; 0 1 0; 1 0 0; 1 1 0; 0 0 0];
     inputs_count = rows(inputs);
     outputs = ft(inputs);
