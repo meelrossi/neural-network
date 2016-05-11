@@ -1,3 +1,3 @@
-function step = step_ft(x)
+function step = step(x)
     step = x>=0;
 end
