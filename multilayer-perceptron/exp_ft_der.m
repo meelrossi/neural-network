@@ -1,4 +1,4 @@
 
-function ret = exp_ft_der(b,g)
-	ret = 2*b*g.*(1-g);
+function ret = exp_ft_der(h, b)
+    ret = 2 * b * h.*(1 - h);
 end
