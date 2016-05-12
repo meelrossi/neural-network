@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n ,b)
+function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
