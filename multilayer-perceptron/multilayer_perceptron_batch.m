@@ -16,7 +16,7 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
         in_layer = V{i};
     end
 
-    c_error = get_error(inputs_count, s, V);
+    c_error = get_error(nets_count, s, V);
 
     while (c_error > err)
 
@@ -39,14 +39,14 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
             in_layer = V{i};
         end
 
-        c_error = get_error(inputs_count, s, V);
+        c_error = get_error(nets_count, s, V);
     end
 
     ret = nets;
 end
 
-function err = get_error (inputs_count, s, V)
-    outputs_diff = s - V{inputs_count};
+function err = get_error (nets_count, s, V)
+    outputs_diff = s - V{nets_count};
 
-    err = sum(outputs_diff.^2) / (2 * inputs_count);
+    err = sum(outputs_diff.^2) / (2 * nets_count);
 end
