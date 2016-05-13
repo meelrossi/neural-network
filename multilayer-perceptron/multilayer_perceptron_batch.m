@@ -25,7 +25,6 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
         end
         nets{1} = nets{1} + n * [ones(inputs_count,1).*(-1) t{1}]' * delta{1};
 
-
         % forward step
         V = forward_step(inputs, nets, g, b);
 

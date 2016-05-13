@@ -14,7 +14,6 @@ function ret = test(ft, g, g_der, n, b)
 
     resolved_nets = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b);
 
-
     layer_outputs = forward_step(inputs, resolved_nets, g, b);
 
     ret = layer_outputs(size(resolved_nets)(2));

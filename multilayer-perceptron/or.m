@@ -1,3 +1,4 @@
+
 function resp = or (inputs)
     inputs_count = rows(inputs);
     for i = 1 : inputs_count
