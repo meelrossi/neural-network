@@ -9,12 +9,7 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
     nets_count = size(nets)(2);
 
     % forward step
-    in_layer = inputs;
-    for i = 1 : nets_count
-        layer = [ones(inputs_count, 1).*(-1) in_layer];
-        V{i} = g(layer * nets{i}, b);
-        in_layer = V{i};
-    end
+    V = forward_step(inputs, nets, g, b);
 
     c_error = get_error(nets_count, s, V);
 
@@ -32,14 +27,10 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
 
 
         % forward step
-        in_layer = inputs;
-        for i = 1 : nets_count
-            layer = [ones(inputs_count, 1).*(-1) in_layer];
-            V{i} = g(layer * nets{i}, b);
-            in_layer = V{i};
-        end
+        V = forward_step(inputs, nets, g, b);
 
         c_error = get_error(nets_count, s, V);
+        %fflush(1);
     end
 
     ret = nets;
