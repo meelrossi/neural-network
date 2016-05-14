@@ -1,5 +1,7 @@
 
 % example of use: test(@xor, @exp_ft, @exp_ft_der, 0.5, 2, false)
+% example of use: test(@xor, @tanh_ft, @tanh_ft_der, 0.5, 1, true)
+% example of use: test(@xor, @tanh_ft, @tanh_ft_der, 0.2, 0.5, false)
 function ret = test(ft, g, g_der, n, b, incremental)
     inputs = [1 1 1; 1 0 1; 0 1 1; 0 0 1; 0 1 0; 1 0 0; 1 1 0; 0 0 0];
     % inputs = [1 1; 1 0; 0 1; 0 0];
