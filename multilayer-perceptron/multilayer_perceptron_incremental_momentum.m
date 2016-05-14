@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, betha)
+function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, betha, alpha)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
@@ -13,6 +13,11 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, beth
     V = forward_step(inputs, nets, g, betha);
 
     c_error = get_error(nets_count, s, V);
+
+    for i = 1: nets_count
+        n_size = size(nets{i});
+        old_deltaW{i} = zeros(n_size(1), n_size(2));
+    end
 
     while (c_error > err)
 
@@ -28,9 +33,13 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, beth
                 % removing umbral values
                 aux = nets{i}(2 : end, :);
                 delta{i - 1} = g_der(V{i - 1}, betha).*(delta{i} * aux');
-                nets{i} = nets{i} + n * [-1 V{i - 1}]' * delta{i};
+                deltaW = n * [-1 V{i - 1}]' * delta{i} + alpha * old_deltaW{i};
+                nets{i} = nets{i} + deltaW;
+                old_deltaW{i} = deltaW;
             end
-            nets{1} = nets{1} + n * [-1 t{1}(next_pattern, :)]' * delta{1};
+            deltaW = n * [-1 t{1}(next_pattern, :)]' * delta{1} + old_deltaW{1};
+            nets{1} = nets{1} + deltaW;
+            old_deltaW{1} = deltaW;
 
         end
 

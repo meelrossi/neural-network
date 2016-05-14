@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
+function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, betha)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
@@ -10,24 +10,23 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b)
     nets_count = size(nets)(2);
 
     % forward step
-    V = forward_step(inputs, nets, g, b);
+    V = forward_step(inputs, nets, g, betha);
 
     c_error = get_error(nets_count, s, V);
 
     while (c_error > err)
-
         % back propagation
-        delta{nets_count} = g_der(V{nets_count}, b).*(s - V{nets_count});
+        delta{nets_count} = g_der(V{nets_count}, betha).*(s - V{nets_count});
         for i = nets_count : (-1) : 2
             % removing umbral values
             aux = nets{i}(2 : end, :);
-            delta{i - 1} = g_der(V{i - 1}, b).*(delta{i} * aux');
+            delta{i - 1} = g_der(V{i - 1}, betha).*(delta{i} * aux');
             nets{i} = nets{i} + n * [ones(inputs_count,1).*(-1) V{i - 1}]' * delta{i};
         end
         nets{1} = nets{1} + n * [ones(inputs_count,1).*(-1) t{1}]' * delta{1};
 
         % forward step
-        V = forward_step(inputs, nets, g, b);
+        V = forward_step(inputs, nets, g, betha);
 
         c_error = get_error(nets_count, s, V);
         %fflush(1);
