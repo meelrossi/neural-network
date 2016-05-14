@@ -5,6 +5,7 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b)
     input_size = columns(inputs);
     s = t{2}; % matrix[inputs_count][s_size]
     s_size = columns(s);
+    steps = 0;
 
     nets_count = size(nets)(2);
 
@@ -38,8 +39,11 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b)
 
         c_error = get_error(nets_count, s, V);
         %fflush(1);
+
+        steps++;
     end
 
+    steps
     ret = nets;
 end
 
