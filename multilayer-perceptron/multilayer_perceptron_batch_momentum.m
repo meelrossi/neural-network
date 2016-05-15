@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, betha)
+function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, betha, alpha)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
@@ -14,6 +14,11 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, betha)
 
     c_error = get_error(nets_count, s, V);
 
+    for i = 1: nets_count
+        n_size = size(nets{i});
+        old_deltaW{i} = zeros(n_size(1), n_size(2));
+    end
+
     while (c_error > err)
         % back propagation
         delta{nets_count} = g_der(V{nets_count}, betha).*(s - V{nets_count});
@@ -21,9 +26,13 @@ function ret = multilayer_perceptron_batch(nets, t, err, g, g_der, n, betha)
             % removing umbral values
             aux = nets{i}(2 : end, :);
             delta{i - 1} = g_der(V{i - 1}, betha).*(delta{i} * aux');
-            nets{i} = nets{i} + n * [ones(inputs_count,1).*(-1) V{i - 1}]' * delta{i};
+            deltaW = n * [ones(inputs_count,1).*(-1) V{i - 1}]' * delta{i} + alpha * old_deltaW{i};
+            nets{i} = nets{i} + deltaW;
+            old_deltaW{i} = deltaW;
         end
-        nets{1} = nets{1} + n * [ones(inputs_count,1).*(-1) t{1}]' * delta{1};
+        deltaW = n * [ones(inputs_count,1).*(-1) t{1}]' * delta{1}  + alpha * old_deltaW{1};
+        nets{1} = nets{1} + deltaW;
+        old_deltaW{1} = deltaW;
 
         % forward step
         V = forward_step(inputs, nets, g, betha);
