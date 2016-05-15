@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der, n, betha, alpha)
+function ret = multilayer_perceptron_incremental_adaptative_etha(nets, t, err, g, g_der, n, betha, alpha, a, b, K)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
@@ -8,6 +8,16 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
     steps = 0;
 
     nets_count = size(nets)(2);
+
+    previous_nets = nets;
+
+    positive_steps = 0;
+
+    old_alpha = alpha;
+
+    p_error = 0;
+
+    test_step = false;
 
     % forward step
     V = forward_step(inputs, nets, g, betha);
@@ -49,6 +59,34 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
         c_error = get_error(nets_count, s, V);
         %fflush(1);
 
+        delta_error = p_error - c_error;
+
+        p_error = c_error;
+
+        if (test_step)
+            alpha = old_alpha;
+        endif
+
+        if(delta_error > 0)
+            positive_steps++;
+            previous_nets = nets;
+            test_step = false;
+        else
+            if(test_step)
+                nets = previous_nets;
+                n -= b * n;
+                test_step = false;
+            else
+                positive_steps = 0;
+                alpha = 0;
+                test_step = true;
+            endif
+        endif
+        positive_steps
+        if (positive_steps >= K)
+            n += a;
+        endif
+        n
         steps++;
     end
 
