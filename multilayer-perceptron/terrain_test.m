@@ -3,7 +3,7 @@
 % example of use: terrain_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, false)
 function ret = terrain_test(g, g_der, n, b, incremental)
     data_set = load('-ascii', 'terrain8modif.txt');
-    maximum = max(max(data_set))
+    maximum = max(max(data_set));
 
     inputs = [data_set(:, 1) data_set(:, 2)];
     s = [data_set(:, 3)];
