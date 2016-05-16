@@ -14,6 +14,12 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, beth
 
     c_error = get_error(nets_count, s, V);
 
+    figure(1);
+    plot(0,c_error);
+    vh = get(gca,'children');
+    y(1)= c_error;
+    x(1)= 0;
+
     while (c_error > err)
 
         inputs_order = randperm(inputs_count);
@@ -41,6 +47,12 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, beth
         %fflush(1);
 
         steps++;
+
+        y(end + 1) = c_error;
+        x(end + 1) = steps;
+        fflush(1);
+        set(vh, 'xdata', x, 'ydata', y); 
+        pause(0.1);
     end
 
     steps

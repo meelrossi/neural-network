@@ -19,6 +19,12 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
         old_deltaW{i} = zeros(n_size(1), n_size(2));
     end
 
+    figure(1);
+    plot(0,c_error);
+    vh = get(gca,'children');
+    y(1)= c_error;
+    x(1)= 0;
+
     while (c_error > err)
 
         inputs_order = randperm(inputs_count);
@@ -50,6 +56,11 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
         %fflush(1);
 
         steps++;
+        y(end + 1) = c_error;
+        x(end + 1) = steps;
+        fflush(1);
+        set(vh, 'xdata', x, 'ydata', y); 
+        pause(0.1);
     end
 
     steps
