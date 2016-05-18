@@ -13,7 +13,7 @@ function ret = terrain_training_test(g, g_der, n, b, incremental, graphics)
     t{1} = inputs./maximum;
     t{2} = s./maximum;
 
-    err = 0.1;
+    err = 0.01;
 
     nets = generate_nets([2 5 2 1]);
 
