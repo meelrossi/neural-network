@@ -1,7 +1,7 @@
 
-% example of use: terrain_test(@tanh_ft, @tanh_ft_der, 0.5, 1, true)
-% example of use: terrain_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, false)
-function ret = terrain_test(g, g_der, n, b, incremental)
+% example of use: terrain_test(@tanh_ft, @tanh_ft_der, 0.5, 1, true, false)
+% example of use: terrain_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, false, false)
+function ret = terrain_test(g, g_der, n, b, incremental, graphics)
     data_set = load('-ascii', 'terrain8modif.txt');
     maximum = max(max(data_set));
 
@@ -16,9 +16,9 @@ function ret = terrain_test(g, g_der, n, b, incremental)
     nets = generate_nets([2 5 2 1]);
 
     if (incremental)
-        resolved_nets = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b);
+        resolved_nets = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b, graphics);
     else
-        resolved_nets = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b);
+        resolved_nets = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b, graphics);
     endif
 
     layer_outputs = forward_step(inputs./maximum, resolved_nets, g, b);

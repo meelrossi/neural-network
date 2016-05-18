@@ -1,7 +1,7 @@
 
-% example of use: terrain_test(@tanh_ft, @tanh_ft_der, 0.5, 1, true)
-% example of use: terrain_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, false)
-function ret = terrain_test(g, g_der, n, b, incremental)
+% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.5, 1, true, false)
+% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, false, false)
+function ret = terrain_training_test(g, g_der, n, b, incremental, graphics)
     data_filename = 'terrain8modif.txt';
 
     training_set = get_training_set(data_filename);
@@ -19,9 +19,9 @@ function ret = terrain_test(g, g_der, n, b, incremental)
 
     % training net with selected training_set
     if (incremental)
-        resolved_nets = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b);
+        resolved_nets = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b, graphics);
     else
-        resolved_nets = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b);
+        resolved_nets = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b, graphics);
     endif
 
     % now that the net is trained with the training_set lets
