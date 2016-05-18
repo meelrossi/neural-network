@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, betha)
+function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, betha, graphics)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
@@ -14,11 +14,13 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, beth
 
     c_error = get_error(nets_count, s, V);
 
-    figure(1);
-    plot(0,c_error);
-    vh = get(gca,'children');
-    y(1)= c_error;
-    x(1)= 0;
+    if (graphics)
+        figure(1);
+        plot(0,c_error);
+        vh = get(gca,'children');
+        y(1)= c_error;
+        x(1)= 0;
+    endif
 
     while (c_error > err)
 
@@ -48,11 +50,13 @@ function ret = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, beth
 
         steps++;
 
-        y(end + 1) = c_error;
-        x(end + 1) = steps;
-        fflush(1);
-        set(vh, 'xdata', x, 'ydata', y); 
-        pause(0.1);
+        if (graphics)
+            y(end + 1) = c_error;
+            x(end + 1) = steps;
+            fflush(1);
+            set(vh, 'xdata', x, 'ydata', y); 
+            pause(0.1);
+        endif
     end
 
     steps

@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, betha, alpha)
+function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, betha, graphics, alpha)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
@@ -19,11 +19,13 @@ function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, b
         old_deltaW{i} = zeros(n_size(1), n_size(2));
     end
 
-    figure(1)
-    plot(0,c_error);
-    vh = get(gca,'children');
-    y(1)= c_error;
-    x(1)= 0;
+    if (graphics)
+        figure(1)
+        plot(0,c_error);
+        vh = get(gca,'children');
+        y(1)= c_error;
+        x(1)= 0;
+    endif
 
     while (c_error > err)
         % back propagation
@@ -47,11 +49,13 @@ function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, b
         %fflush(1);
 
         steps++;
-        y(end + 1) = c_error;
-        x(end + 1) = steps;
-        fflush(1);
-        set(vh, 'xdata', x, 'ydata', y); 
-        pause(0.1);
+        if (graphics)
+            y(end + 1) = c_error;
+            x(end + 1) = steps;
+            fflush(1);
+            set(vh, 'xdata', x, 'ydata', y); 
+            pause(0.1);
+        endif
     end
 
     steps

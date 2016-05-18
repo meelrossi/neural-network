@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_der, n, betha, alpha, a, b, K)
+function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_der, n, betha, graphics, alpha, a, b, K)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
@@ -20,27 +20,27 @@ function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_de
     old_alpha = alpha;
     test_step = false;
 
-    f1 = figure(1);
+    if(graphics)
+        f1 = figure(1);
+        f2 = figure(2);
 
-    f2 = figure(2);
+        figure(f1);
+        plot(0,c_error, 'color', 'r', 'markersize', 7);
+        title('Error variation', 'fontsize', 20, 'fontname', 'avenir next');
+        xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+        ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
+        vh1 = get(gca,'children');
+        x(1)= 0;
+        error_y(1)= c_error;
 
-    figure(f1);
-    plot(0,c_error, 'color', 'r', 'markersize', 7);
-    title('Error variation', 'fontsize', 20, 'fontname', 'avenir next');
-    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
-    ylabel('Error', 'fontsize', 15, 'fontname', 'avenir next');
-    vh1 = get(gca,'children');
-    error_x(1)= 0;
-    error_y(1)= c_error;
-
-    figure(f2);
-    plot(0,n, 'color', 'g', 'markersize', 7);
-    title('Etha variation', 'fontsize', 20, 'fontname', 'avenir next');
-    xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
-    ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
-    vh2 = get(gca, 'children');
-    etha_x(1) = 0;
-    etha_y(1) = n;
+        figure(f2);
+        plot(0,n, 'color', 'g', 'markersize', 7);
+        title('Etha variation', 'fontsize', 20, 'fontname', 'avenir next');
+        xlabel('Step', 'fontsize', 15, 'fontname', 'avenir next');
+        ylabel('Etha', 'fontsize', 15, 'fontname', 'avenir next');
+        vh2 = get(gca, 'children');
+        etha_y(1) = n;
+    endif
 
     for i = 1: nets_count
         n_size = size(nets{i});
@@ -99,16 +99,17 @@ function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_de
 
         steps++;
 
-        error_x(end + 1) = steps;
-        error_y(end + 1) = c_error;
-        etha_x(end + 1) = steps;
-        etha_y(end + 1) = n;
+        if (graphics)
+            x(end + 1) = steps;
+            error_y(end + 1) = c_error;
+            etha_y(end + 1) = n;
 
-        figure(f1);
-        set(vh1, 'xdata', error_x, 'ydata', error_y);
+            figure(f1);
+            set(vh1, 'xdata', x, 'ydata', error_y);
 
-        figure(f2);
-        set(vh2, 'xdata', etha_x, 'ydata', etha_y);
+            figure(f2);
+            set(vh2, 'xdata', x, 'ydata', etha_y);
+        endif
     end
 
     steps
@@ -120,3 +121,4 @@ function err = get_error (nets_count, s, V)
 
     err = sum(outputs_diff.^2) / (2 * nets_count);
 end
+
