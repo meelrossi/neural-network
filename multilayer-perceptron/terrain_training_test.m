@@ -5,11 +5,10 @@ function ret = terrain_test(g, g_der, n, b, incremental)
     data_filename = 'terrain8modif.txt';
 
     training_set = get_training_set(data_filename);
-    data_set = load('-ascii', data_filename);
-    maximum = max(max(data_set));
+    maximum = max(max(training_set));
 
-    inputs = [data_set(:, 1) data_set(:, 2)];
-    s = [data_set(:, 3)];
+    inputs = [training_set(:, 1) training_set(:, 2)];
+    s = [training_set(:, 3)];
 
     t{1} = inputs./maximum;
     t{2} = s./maximum;
@@ -18,17 +17,24 @@ function ret = terrain_test(g, g_der, n, b, incremental)
 
     nets = generate_nets([2 5 2 1]);
 
+    % training net with selected training_set
     if (incremental)
         resolved_nets = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b);
     else
         resolved_nets = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b);
     endif
 
-    layer_outputs = forward_step(inputs./maximum, resolved_nets, g, b);
+    % now that the net is trained with the training_set lets
+    % see which output generates for the complete data set.
+    complete_data_set = load('-ascii', data_filename);
+    complete_data_set_inputs = [complete_data_set(:, 1) complete_data_set(:, 2)];
+    complete_data_set_maximum = max(max(complete_data_set));
 
-    ret = (layer_outputs(size(resolved_nets)(2)){1}).*maximum;
+    layer_outputs = forward_step(complete_data_set_inputs./complete_data_set_maximum, resolved_nets, g, b);
 
-    saving = [inputs ret];
+    ret = (layer_outputs(size(resolved_nets)(2)){1}).*complete_data_set_maximum;
+
+    saving = [complete_data_set_inputs ret];
     writeToFile(saving);
 end
 
