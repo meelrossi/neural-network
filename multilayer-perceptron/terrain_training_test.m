@@ -40,13 +40,13 @@ end
 
 function ret = writeToFile(matrix)
     fid = fopen('output.txt', 'w+');
-    fprintf(fid, '%f ', rows(matrix));
+    fprintf(fid, '%d ', rows(matrix));
     fprintf(fid, '\n');
-    fprintf(fid, '%f ', 0);
+    fprintf(fid, '%d ', 0);
     fprintf(fid, '\n');
     for i = 1 : rows(matrix)
         fprintf(fid, '%f ', matrix(i,:));
-        fprintf(fid, '\n');
+        fprintf(fid, ' 1 0 0 \n');
     end
     fclose(fid);
     % csvwrite('output.txt', matrix);
