@@ -1,7 +1,22 @@
 
-% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.5, 1, true, false)
-% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, false, false)
-function ret = terrain_training_test(g, g_der, n, b, incremental, graphics)
+% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.5, 1, 2, 1, false)
+% learningType: 1 -> Batch, 2 -> Incremental
+% algorithm: 1 -> Original, 2 -> Momentum, 3 -> Adaptative etha
+% K: number of positive steps befour changing etha on adaptative etha algorithm
+function ret = terrain_training_test(g, g_der, n, betha, learningType, algorithm, graphics, alpha = 0, a = 0, b = 0, K = 0)
+    algorithms = {
+                    {
+                     @multilayer_perceptron_batch,
+                     @multilayer_perceptron_batch_momentum,
+                     @multilayer_perceptron_batch_adaptative_etha
+                    }
+                    {
+                     @multilayer_perceptron_incremental,
+                     @multilayer_perceptron_incremental_momentum,
+                     @multilayer_perceptron_incremental_adaptative_etha
+                    }
+                };
+
     data_filename = 'terrain8modif.txt';
 
     training_set = get_training_set(data_filename);
@@ -18,11 +33,8 @@ function ret = terrain_training_test(g, g_der, n, b, incremental, graphics)
     nets = generate_nets([2 5 2 1]);
 
     % training net with selected training_set
-    if (incremental)
-        resolved_nets = multilayer_perceptron_incremental(nets, t, err, g, g_der, n, b, graphics);
-    else
-        resolved_nets = multilayer_perceptron_batch(nets, t, err, g, g_der, n, b, graphics);
-    endif
+    fun = algorithms{learningType}{algorithm};
+    resolved_nets = fun(nets, t, err, g, g_der, n, betha, graphics, alpha, a, b, K);
 
     % now that the net is trained with the training_set lets
     % see which output generates for the complete data set.
@@ -30,7 +42,7 @@ function ret = terrain_training_test(g, g_der, n, b, incremental, graphics)
     complete_data_set_inputs = [complete_data_set(:, 1) complete_data_set(:, 2)];
     complete_data_set_maximum = max(max(complete_data_set));
 
-    layer_outputs = forward_step(complete_data_set_inputs./complete_data_set_maximum, resolved_nets, g, b);
+    layer_outputs = forward_step(complete_data_set_inputs./complete_data_set_maximum, resolved_nets, g, betha);
 
     ret = (layer_outputs(size(resolved_nets)(2)){1}).*complete_data_set_maximum;
 

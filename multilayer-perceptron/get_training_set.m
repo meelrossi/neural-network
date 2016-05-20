@@ -20,14 +20,13 @@ function ret = get_training_set(data_filename)
         is_outer_bool = is_outer(min_x, max_x, min_y, max_y, x, y);
 
         if (mod(i, 4) != 0 && !is_outer_bool)
-        	dataset_sorted(i - delete_count, :) = [];
-        	delete_count++;
+            dataset_sorted(i - delete_count, :) = [];
+            delete_count++;
         endif
 
     end
 
-    delete_count
-	ret = dataset_sorted;
+    ret = dataset_sorted;
 end
 
 function bool = is_outer(min_x, max_x, min_y, max_y, x, y)
