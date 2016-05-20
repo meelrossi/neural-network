@@ -48,6 +48,8 @@ function ret = terrain_training_test(g, g_der, n, betha, learningType, algorithm
 
     saving = [complete_data_set_inputs ret];
     writeToFile(saving);
+
+    complete_data_set_error = get_error(size(nets)(2), complete_data_set(:, 3)./complete_data_set_maximum, layer_outputs)
 end
 
 function ret = writeToFile(matrix)
