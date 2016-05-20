@@ -61,9 +61,3 @@ function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, b
     steps
     ret = nets;
 end
-
-function err = get_error (nets_count, s, V)
-    outputs_diff = s - V{nets_count};
-
-    err = sum(outputs_diff.^2) / (2 * nets_count);
-end

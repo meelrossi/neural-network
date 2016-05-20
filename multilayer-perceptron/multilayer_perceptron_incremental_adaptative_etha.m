@@ -125,9 +125,3 @@ function ret = multilayer_perceptron_incremental_adaptative_etha(nets, t, err, g
     steps
     ret = nets;
 end
-
-function err = get_error (nets_count, s, V)
-    outputs_diff = s - V{nets_count};
-
-    err = sum(outputs_diff.^2) / (2 * nets_count);
-end
