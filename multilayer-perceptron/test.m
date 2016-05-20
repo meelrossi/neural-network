@@ -1,6 +1,6 @@
 
 % example of use: test(@xor, @exp_ft, @exp_ft_der, 0.5, 1, 1, 1, false)
-% example of use: test(@xor, @tanh_ft, @tanh_ft_der, 0.5, 1, 1, 2, false, 2, 0.9)
+% example of use: test(@xor, @tanh_ft, @tanh_ft_der, 0.5, 1, 1, 2, false, 0.9)
 % example of use: test(@xor, @tanh_ft, @tanh_ft_der, 0.2, 0.5, 1, 3, false, 0.9, 0.05, 0.1, 20)
 % learningType: 1 -> Batch, 2 -> Incremental
 % algorithm: 1 -> Original, 2 -> Momentum, 3 -> Adaptative etha
