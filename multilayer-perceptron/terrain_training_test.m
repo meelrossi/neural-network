@@ -28,7 +28,7 @@ function ret = terrain_training_test(g, g_der, n, betha, learningType, algorithm
     t{1} = inputs./maximum;
     t{2} = s./maximum;
 
-    err = 0.01;
+    err = 0.0001;
 
     nets = generate_nets([2 5 2 1]);
 
