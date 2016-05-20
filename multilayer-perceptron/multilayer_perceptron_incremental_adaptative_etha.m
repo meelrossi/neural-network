@@ -75,8 +75,8 @@ function ret = multilayer_perceptron_incremental_adaptative_etha(nets, t, err, g
         % forward step
         V = forward_step(inputs, nets, g, betha);
 
-        c_error = get_error(nets_count, s, V);
-        %fflush(1);
+        c_error = get_error(nets_count, s, V)
+        fflush(1);
 
         delta_error = p_error - c_error;
 

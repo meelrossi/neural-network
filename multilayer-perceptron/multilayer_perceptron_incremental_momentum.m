@@ -54,8 +54,8 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
         % forward step
         V = forward_step(inputs, nets, g, betha);
 
-        c_error = get_error(nets_count, s, V);
-        %fflush(1);
+        c_error = get_error(nets_count, s, V)
+        fflush(1);
 
         steps++;
 
