@@ -18,6 +18,9 @@ function ret = terrain_training_test(g, g_der, n, betha, learningType, algorithm
                 };
 
     data_filename = 'terrain8modif.txt';
+    complete_data_set = load('-ascii', data_filename);
+    complete_data_set_inputs = [complete_data_set(:, 1) complete_data_set(:, 2)];
+    complete_data_set_maximum = max(max(complete_data_set));
 
     training_set = get_training_set(data_filename);
     maximum = max(max(training_set));
@@ -28,24 +31,18 @@ function ret = terrain_training_test(g, g_der, n, betha, learningType, algorithm
     t{1} = inputs./maximum;
     t{2} = s./maximum;
 
-    err = 0.0001;
+    err = 0.001;
 
     nets = generate_nets([2 5 2 1]);
 
     % training net with selected training_set
     fun = algorithms{learningType}{algorithm};
-    resolved_nets = fun(nets, t, err, g, g_der, n, betha, graphics, alpha, a, b, K);
+    resolved_nets = fun(nets, t, complete_data_set./complete_data_set_maximum, err, g, g_der, n, betha, graphics, alpha, a, b, K);
 
     % now that the net is trained with the training_set lets
     % see which output generates for the complete data set.
-    complete_data_set = load('-ascii', data_filename);
-    complete_data_set_inputs = [complete_data_set(:, 1) complete_data_set(:, 2)];
-    complete_data_set_maximum = max(max(complete_data_set));
-
     layer_outputs = forward_step(complete_data_set_inputs./complete_data_set_maximum, resolved_nets, g, betha);
-
     ret = (layer_outputs(size(resolved_nets)(2)){1}).*complete_data_set_maximum;
-
     saving = [complete_data_set_inputs ret];
     writeToFile(saving);
 end

@@ -26,7 +26,7 @@ function ret = test(ft, g, g_der, n, betha, learningType, algorithm, graphics, a
     t{1} = inputs;
     t{2} = s;
 
-    err = 0.001;
+    err = 0.0001;
 
     nets = generate_nets([3 5 2 1]);
 

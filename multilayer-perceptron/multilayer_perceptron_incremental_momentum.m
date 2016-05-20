@@ -1,5 +1,5 @@
 
-function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der, n, betha, graphics, alpha)
+function ret = multilayer_perceptron_incremental_momentum(nets, t, x, err, g, g_der, n, betha, graphics, alpha)
     inputs = t{1}; % matrix[inputs_count][input_size]
     inputs_count = rows(inputs);
     input_size = columns(inputs);
