@@ -7,7 +7,7 @@
 % example of use: terrain_training_test([2 15 1], 0.001, @tanh_ft, @tanh_ft_der, 0.5, 0.5, 1, 3, false, 0.9, 0.2, 0.05, 5)
 
 % example of use: terrain_training_test([2 5 2 1], 0.001, @tanh_ft, @tanh_ft_der, 0.5, 1, 2, 1, false)
-% example of use: terrain_training_test([2 5 2 1], 0.001, @tanh_ft, @tanh_ft_der, 0.5, 0.2, 2, 2, false, 0.9)
+% example of use: terrain_training_test([2 7 1], 0.001, @tanh_ft, @tanh_ft_der, 0.2, 0.2, 2, 2, false, 0.9)
 % example of use: terrain_training_test([2 5 2 1], 0.001, @tanh_ft, @tanh_ft_der, 0.2, 0.5, 2, 3, false, 0.9, 0.05, 0.1, 10)
 
 % learningType: 1 -> Batch, 2 -> Incremental
