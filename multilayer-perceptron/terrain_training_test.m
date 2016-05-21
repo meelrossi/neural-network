@@ -1,14 +1,20 @@
 
 % rand("seed", 1) set good seed
-% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.5, 1, 2, 1, false)
-% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, 2, 2, false, 0.9)
-% example of use: terrain_training_test(@tanh_ft, @tanh_ft_der, 0.2, 0.5, 2, 3, false, 0.9, 0.05, 0.1, 10)
+
+% nets = generate_nets([2 15 1]);
+%
+%
+% example of use: terrain_training_test([2 15 1], 0.001, @tanh_ft, @tanh_ft_der, 0.5, 0.5, 1, 3, false, 0.9, 0.2, 0.05, 5)
+
+% example of use: terrain_training_test([2 5 2 1], 0.001, @tanh_ft, @tanh_ft_der, 0.5, 1, 2, 1, false)
+% example of use: terrain_training_test([2 5 2 1], 0.001, @tanh_ft, @tanh_ft_der, 0.2, 0.5, 2, 2, false, 0.9)
+% example of use: terrain_training_test([2 5 2 1], 0.001, @tanh_ft, @tanh_ft_der, 0.2, 0.5, 2, 3, false, 0.9, 0.05, 0.1, 10)
 
 % learningType: 1 -> Batch, 2 -> Incremental
 % algorithm: 1 -> Original, 2 -> Momentum, 3 -> Adaptative etha
 % K: number of positive steps befour changing etha on adaptative etha algorithm
 
-function ret = terrain_training_test(g, g_der, n, betha, learningType, algorithm, graphics, alpha = 0, a = 0, b = 0, K = 0)
+function ret = terrain_training_test(net_structure, err, g, g_der, n, betha, learningType, algorithm, graphics, alpha = 0, a = 0, b = 0, K = 0)
     algorithms = {
                     {
                      @multilayer_perceptron_batch,
@@ -34,9 +40,7 @@ function ret = terrain_training_test(g, g_der, n, betha, learningType, algorithm
     t{1} = inputs./maximum;
     t{2} = s./maximum;
 
-    err = 0.001;
-
-    nets = generate_nets([2 5 2 1]);
+    nets = generate_nets(net_structure);
 
     % training net with selected training_set
     fun = algorithms{learningType}{algorithm};
