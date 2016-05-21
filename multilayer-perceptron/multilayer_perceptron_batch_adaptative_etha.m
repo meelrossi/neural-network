@@ -47,7 +47,7 @@ function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_de
         old_deltaW{i} = zeros(n_size(1), n_size(2));
     end
 
-    while (c_error > err)
+    while (steps < 20000)
         % back propagation
         delta{nets_count} = g_der(V{nets_count}, betha).*(s - V{nets_count});
         for i = nets_count : (-1) : 2
@@ -65,7 +65,7 @@ function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_de
         % forward step
         V = forward_step(inputs, nets, g, betha);
 
-        c_error = get_error(nets_count, s, V)
+        c_error = get_error(nets_count, s, V);
         fflush(1);
 
         delta_error = p_error - c_error;
@@ -111,7 +111,7 @@ function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_de
             set(vh2, 'xdata', x, 'ydata', etha_y);
         endif
     end
-
-    steps
+    c_error
+    steps;
     ret = nets;
 end

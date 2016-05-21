@@ -27,7 +27,7 @@ function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, b
         x(1)= 0;
     endif
 
-    while (c_error > err)
+    while (steps < 20000)
         % back propagation
         delta{nets_count} = g_der(V{nets_count}, betha).*(s - V{nets_count});
         for i = nets_count : (-1) : 2
@@ -45,7 +45,7 @@ function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, b
         % forward step
         V = forward_step(inputs, nets, g, betha);
 
-        c_error = get_error(nets_count, s, V)
+        c_error = get_error(nets_count, s, V);
         fflush(1);
 
         steps++;
@@ -57,7 +57,7 @@ function ret = multilayer_perceptron_batch_momentum(nets, t, err, g, g_der, n, b
             pause(0.1);
         endif
     end
-
-    steps
+    c_error
+    steps;
     ret = nets;
 end

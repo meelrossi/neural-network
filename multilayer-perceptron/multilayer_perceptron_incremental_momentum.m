@@ -27,7 +27,7 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
         x(1)= 0;
     endif
 
-    while (c_error > err)
+    while (steps < 20000)
 
         inputs_order = randperm(inputs_count);
         for p = 1 : inputs_count
@@ -54,7 +54,7 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
         % forward step
         V = forward_step(inputs, nets, g, betha);
 
-        c_error = get_error(nets_count, s, V)
+        c_error = get_error(nets_count, s, V);
         fflush(1);
 
         steps++;
@@ -66,7 +66,7 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
             pause(0.1);
         endif
     end
-
-    steps
+    c_error
+    steps;
     ret = nets;
 end
