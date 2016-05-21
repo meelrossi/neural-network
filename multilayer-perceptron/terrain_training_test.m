@@ -6,7 +6,7 @@
 % example of use: terrain_training_test([2 4 1], 0.001, @tanh_ft, @tanh_ft_der, 0.3, 0.2, 1, 2, false, 0.9)
 % example of use: terrain_training_test([2 15 1], 0.001, @tanh_ft, @tanh_ft_der, 0.5, 0.4, 1, 3, false, 0.9, 0.2, 0.05, 11)
 
-% example of use: terrain_training_test([2 18 1], 0.001, @tanh_ft, @tanh_ft_der, 0.2, 0.5, 2, 1, false)
+% example of use: terrain_training_test([2 18 1], 0.0005, @tanh_ft, @tanh_ft_der, 0.2, 0.5, 2, 1, false)
 % example of use: terrain_training_test([2 9 1], 0.001, @tanh_ft, @tanh_ft_der, 0.2, 0.2, 2, 2, false, 0.9)
 % example of use: terrain_training_test([2 11 1], 0.001, @tanh_ft, @tanh_ft_der, 0.2, 0.2, 2, 3, false, 0.9, 0.2, 0.1, 5)
 
