@@ -31,7 +31,7 @@ function ret = terrain_training_test(net_structure, err, g, g_der, n, betha, lea
     data_filename = 'terrain8modif.txt';
     rand('seed', 1);
 
-    training_set = get_training_set(data_filename);
+    training_set = get_training_set(data_filename, true);
     maximum = max(max(training_set));
 
     inputs = [training_set(:, 1) training_set(:, 2)];
