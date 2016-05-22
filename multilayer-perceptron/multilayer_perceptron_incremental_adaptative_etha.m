@@ -66,7 +66,7 @@ function ret = multilayer_perceptron_incremental_adaptative_etha(nets, t, err, g
                 nets{i} = nets{i} + deltaW;
                 old_deltaW{i} = deltaW;
             end
-            deltaW = n * [-1 t{1}(next_pattern, :)]' * delta{1} + old_deltaW{1};
+            deltaW = n * [-1 t{1}(next_pattern, :)]' * delta{1} + alpha * old_deltaW{1};
             nets{1} = nets{1} + deltaW;
             old_deltaW{1} = deltaW;
 
@@ -80,13 +80,12 @@ function ret = multilayer_perceptron_incremental_adaptative_etha(nets, t, err, g
 
         delta_error = p_error - c_error;
 
-        p_error = c_error;
-
         if (test_step)
             alpha = old_alpha;
         endif
 
         if(delta_error >= 0)
+            p_error = c_error;
             positive_steps++;
             previous_nets = nets;
             test_step = false;

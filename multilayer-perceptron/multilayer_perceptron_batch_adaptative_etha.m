@@ -74,7 +74,7 @@ function ret = multilayer_perceptron_batch_adaptative_etha(nets, t, err, g, g_de
             alpha = old_alpha;
         endif
 
-        if(delta_error > 0)
+        if(delta_error >= 0)
             p_error = c_error;
             positive_steps++;
             previous_nets = nets;

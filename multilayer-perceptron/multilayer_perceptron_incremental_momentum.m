@@ -45,7 +45,7 @@ function ret = multilayer_perceptron_incremental_momentum(nets, t, err, g, g_der
                 nets{i} = nets{i} + deltaW;
                 old_deltaW{i} = deltaW;
             end
-            deltaW = n * [-1 t{1}(next_pattern, :)]' * delta{1} + old_deltaW{1};
+            deltaW = n * [-1 t{1}(next_pattern, :)]' * delta{1} + alpha * old_deltaW{1};
             nets{1} = nets{1} + deltaW;
             old_deltaW{1} = deltaW;
 
