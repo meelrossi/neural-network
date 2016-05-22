@@ -48,7 +48,7 @@ function ret = multilayer_perceptron_incremental_adaptative_etha(nets, t, err, g
         old_deltaW{i} = zeros(n_size(1), n_size(2));
     end
 
-    while (steps < 500)
+    while (steps < 20000)
 
         inputs_order = randperm(inputs_count);
         for p = 1 : inputs_count
