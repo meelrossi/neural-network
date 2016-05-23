@@ -37,8 +37,8 @@ function ret = terrain_training_test(net_structure, err, g, g_der, n, betha, lea
     inputs = [training_set(:, 1) training_set(:, 2)];
     s = [training_set(:, 3)];
 
-    t{1} = inputs./maximum;
-    t{2} = s./maximum;
+    t{1} = normalize(g, inputs, maximum);
+    t{2} = normalize(g, s, maximum);
 
     nets = generate_nets(net_structure);
 
@@ -52,14 +52,30 @@ function ret = terrain_training_test(net_structure, err, g, g_der, n, betha, lea
     complete_data_set_inputs = [complete_data_set(:, 1) complete_data_set(:, 2)];
     complete_data_set_maximum = max(max(complete_data_set));
 
-    layer_outputs = forward_step(complete_data_set_inputs./complete_data_set_maximum, resolved_nets, g, betha);
+    layer_outputs = forward_step(normalize(g, complete_data_set_inputs, complete_data_set_maximum), resolved_nets, g, betha);
 
-    ret = (layer_outputs(size(resolved_nets)(2)){1}).*complete_data_set_maximum;
+    ret = denormalize(g, (layer_outputs(size(resolved_nets)(2)){1}), complete_data_set_maximum);
 
     saving = [complete_data_set_inputs ret];
     writeToFile(saving);
 
-    complete_data_set_error = get_error(size(nets)(2), complete_data_set(:, 3)./complete_data_set_maximum, layer_outputs)
+    complete_data_set_error = get_error(size(nets)(2), normalize(g, complete_data_set(:, 3), complete_data_set_maximum), layer_outputs)
+end
+
+function ret = normalize(g, data, maximum)
+    if (g == @exp_ft)
+        ret = (data./maximum + 1)./2;
+    else
+        ret = data./maximum;
+    end 
+end
+
+function ret = denormalize(g, data, maximum)
+    if (g == @exp_ft)
+        ret = (data.*2 - 1).*maximum;
+    else
+        ret = data.*maximum;
+    end 
 end
 
 function ret = writeToFile(matrix)
