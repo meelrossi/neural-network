@@ -14,7 +14,7 @@
 % algorithm: 1 -> Original, 2 -> Momentum, 3 -> Adaptative etha
 % K: number of positive steps befour changing etha on adaptative etha algorithm
 
-function ret = terrain_training_test(net_structure, err, g, g_der, n, betha, learningType, algorithm, graphics, alpha = 0, a = 0, b = 0, K = 0)
+function [generalization, returning_nets] = terrain_training_test(net_structure, err, g, g_der, n, betha, learningType, algorithm, graphics, alpha = 0, a = 0, b = 0, K = 0)
     algorithms = {
                     {
                      @multilayer_perceptron_batch,
@@ -60,6 +60,9 @@ function ret = terrain_training_test(net_structure, err, g, g_der, n, betha, lea
     writeToFile(saving);
 
     complete_data_set_error = get_error(size(nets)(2), normalize(g, complete_data_set(:, 3), complete_data_set_maximum), layer_outputs)
+
+    generalization = saving;
+    returning_nets = resolved_nets;
 end
 
 function ret = normalize(g, data, maximum)
